@@ -1,1 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nook - Financial Projections</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; }
+        .table-container { max-width: 100%; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: right; }
+        th { background-color: #1f2937; color: white; }
+        td:first-child { text-align: left; font-weight: bold; }
+        .notes li { margin-bottom: 8px; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">The Nook</h1>
+            <div class="space-x-4">
+                <a href="#overview" class="hover:text-gray-300">Overview</a>
+                <a href="#key-metrics" class="hover:text-gray-300">Key Metrics</a>
+                <a href="#startup" class="hover:text-gray-300">Startup Costs</a>
+                <a href="#income" class="hover:text-gray-300">Income Statement</a>
+                <a href="#cashflow" class="hover:text-gray-300">Cash Flow</a>
+                <a href="#balance" class="hover:text-gray-300">Balance Sheet</a>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Main Content -->
+    <div class="container mx-auto p-6">
+        <!-- Overview -->
+        <section id="overview" class="mb-8">
+            <h2 class="text-3xl font-bold mb-4">Financial Projections (2025–2027)</h2>
+            <p class="text-lg">Financial outlook for The Nook, a 50-seat bar in Vilnius, Lithuania, focusing on craft cocktails, local beers, and snacks. All figures in EUR, fully equity-funded (€95,000), no debt, 300 operating days/year. Revenue assumes 100 daily customers at €15 average spend, with 6% growth in 2026, 7% in 2027. COGS at 32%, labor at 30% of revenue. Taxes at 15% on EBIT.</p>
+        </section>
+
+        <!-- Key Metrics -->
+        <section id="key-metrics" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Key Metrics</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>2025</th>
+                            <th>2026</th>
+                            <th>2027</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Gross Margin (%)</td><td>68.0</td><td>68.0</td><td>68.0</td></tr>
+                        <tr><td>Net Profit Margin (%)</td><td>16.7</td><td>17.6</td><td>18.5</td></tr>
+                        <tr><td>Return on Investment (%)</td><td>52.8</td><td>58.8</td><td>66.2</td></tr>
+                        <tr><td>Cash Flow Growth (%)</td><td>-</td><td>44.8</td><td>11.2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-4 text-sm">*Notes: Gross Margin = (Revenue - COGS) / Revenue. Net Profit Margin = Net Profit / Revenue. ROI = Net Profit / Initial Investment (€95,000). Cash Flow Growth = (Net Cash Flow - Prior Year Net Cash Flow) / Prior Year Net Cash Flow (2025 baseline: N/A).</p>
+        </section>
+
+        <!-- Startup Costs -->
+        <section id="startup" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Startup Costs (2025)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount (€)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Leasehold Improvements</td><td>40,000</td></tr>
+                        <tr><td>Equipment and Furniture</td><td>30,000</td></tr>
+                        <tr><td>Initial Inventory</td><td>10,000</td></tr>
+                        <tr><td>Licenses and Permits</td><td>5,000</td></tr>
+                        <tr><td>Marketing (Launch)</td><td>5,000</td></tr>
+                        <tr><td>Working Capital</td><td>5,000</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>95,000</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Income Statement -->
+        <section id="income" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">3-Year Income Statement</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>2025</th>
+                            <th>2026</th>
+                            <th>2027</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Revenue</td><td>300,000</td><td>318,000</td><td>340,260</td></tr>
+                        <tr><td>COGS</td><td>96,000</td><td>101,760</td><td>108,883</td></tr>
+                        <tr><td>Gross Profit</td><td>204,000</td><td>216,240</td><td>231,377</td></tr>
+                        <tr><td>Labor</td><td>90,000</td><td>95,400</td><td>102,078</td></tr>
+                        <tr><td>Rent</td><td>25,000</td><td>25,750</td><td>26,523</td></tr>
+                        <tr><td>Utilities</td><td>10,000</td><td>10,300</td><td>10,609</td></tr>
+                        <tr><td>Marketing</td><td>5,000</td><td>5,150</td><td>5,305</td></tr>
+                        <tr><td>Other OpEx</td><td>10,000</td><td>10,300</td><td>10,609</td></tr>
+                        <tr><td>Depreciation</td><td>5,000</td><td>5,000</td><td>5,000</td></tr>
+                        <tr><td>Total Expenses</td><td>145,000</td><td>151,550</td><td>159,623</td></tr>
+                        <tr><td>EBITDA</td><td>64,000</td><td>70,690</td><td>78,994</td></tr>
+                        <tr><td>EBIT</td><td>59,000</td><td>65,690</td><td>73,994</td></tr>
+                        <tr><td>Taxes (15%)</td><td>8,850</td><td>9,854</td><td>11,099</td></tr>
+                        <tr><td><strong>Net Profit</strong></td><td><strong>50,150</strong></td><td><strong>55,836</strong></td><td><strong>62,895</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Cash Flow Statement -->
+        <section id="cashflow" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">3-Year Cash Flow Statement</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>2025</th>
+                            <th>2026</th>
+                            <th>2027</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Beginning Cash</td><td>0</td><td>120,150</td><td>174,000</td></tr>
+                        <tr><td>Net Profit</td><td>50,150</td><td>55,836</td><td>62,895</td></tr>
+                        <tr><td>+ Depreciation</td><td>5,000</td><td>5,000</td><td>5,000</td></tr>
+                        <tr><td>Cash from Operations</td><td>55,150</td><td>60,836</td><td>67,895</td></tr>
+                        <tr><td>CapEx</td><td>-30,000</td><td>-5,000</td><td>-5,000</td></tr>
+                        <tr><td>Δ Working Capital</td><td>0</td><td>-2,000</td><td>-3,000</td></tr>
+                        <tr><td>Cash from Investing</td><td>-30,000</td><td>-7,000</td><td>-8,000</td></tr>
+                        <tr><td>Equity Investment</td><td>95,000</td><td>0</td><td>0</td></tr>
+                        <tr><td>Net Cash Flow</td><td>120,150</td><td>53,836</td><td>59,895</td></tr>
+                        <tr><td><strong>Ending Cash</strong></td><td><strong>120,150</strong></td><td><strong>174,000</strong></td><td><strong>233,895</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Balance Sheet -->
+        <section id="balance" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">3-Year Balance Sheet (Year-End)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>2025</th>
+                            <th>2026</th>
+                            <th>2027</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Assets</strong></td><td></td><td></td><td></td></tr>
+                        <tr><td>Cash</td><td>120,150</td><td>174,000</td><td>233,895</td></tr>
+                        <tr><td>Inventory</td><td>15,000</td><td>15,900</td><td>17,013</td></tr>
+                        <tr><td>Net Fixed Assets</td><td>25,000</td><td>20,000</td><td>15,000</td></tr>
+                        <tr><td><strong>Total Assets</strong></td><td><strong>160,150</strong></td><td><strong>209,900</strong></td><td><strong>265,908</strong></td></tr>
+                        <tr><td><strong>Liabilities</strong></td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td><strong>Equity</strong></td><td></td><td></td><td></td></tr>
+                        <tr><td>Initial Equity</td><td>95,000</td><td>95,000</td><td>95,000</td></tr>
+                        <tr><td>Retained Earnings</td><td>50,150</td><td>105,986</td><td>168,881</td></tr>
+                        <tr><td><strong>Total Equity</strong></td><td><strong>145,150</strong></td><td><strong>200,986</strong></td><td><strong>263,881</strong></td></tr>
+                        <tr><td><strong>Total Liabilities & Equity</strong></td><td><strong>160,150</strong></td><td><strong>209,900</strong></td><td><strong>265,908</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Notes -->
+        <section id="notes" class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Notes</h2>
+            <ul class="notes list-disc pl-6">
+                <li>Cumulative net profit by 2027: €168,881.</li>
+                <li>Positive cash flow from Year 1; €233,895 cash by 2027.</li>
+                <li>Assumptions: 68% gross margin, 3% annual cost inflation, €30,000 initial equipment (€5,000/year depreciation).</li>
+                <li>Risks: Tourism dependency, rising costs. Mitigate with promotions.</li>
+                <li>Consult a Lithuanian accountant for VAT (21%) and local regulations.</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p>&copy; 2025 The Nook. All rights reserved.</p>
+    </footer>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
