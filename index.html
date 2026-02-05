@@ -3,210 +3,1095 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Nook - Financial Projections</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>BeepBeeBeeep - Financial Projections & Route Maps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Arial', sans-serif; }
-        .table-container { max-width: 100%; overflow-x: auto; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: right; }
-        th { background-color: #1f2937; color: white; }
-        td:first-child { text-align: left; font-weight: bold; }
-        .notes li { margin-bottom: 8px; }
+        :root {
+            --primary: #0A3A2A;
+            --accent: #00D9A3;
+            --accent-warm: #FFB800;
+            --bg-light: #F8FAF9;
+            --bg-dark: #0D1F1A;
+            --text-dark: #1A1A1A;
+            --text-light: #F5F5F5;
+            --border: rgba(10, 58, 42, 0.15);
+            --shadow: rgba(10, 58, 42, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0D4A3A 100%);
+            color: var(--text-light);
+            padding: 80px 20px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 217, 163, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--accent);
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .header-description {
+            max-width: 800px;
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            opacity: 0.95;
+            line-height: 1.7;
+        }
+
+        /* Section */
+        section {
+            padding: 80px 20px;
+        }
+
+        section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 48px;
+            color: var(--primary);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 16px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            border-radius: 2px;
+        }
+
+        /* Scenario Cards */
+        .scenarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-bottom: 64px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 48px rgba(10, 58, 42, 0.15);
+        }
+
+        .scenario-header {
+            padding: 32px 24px 24px;
+            position: relative;
+        }
+
+        .scenario-card.optimistic .scenario-header {
+            background: linear-gradient(135deg, #00D9A3 0%, #00B88A 100%);
+        }
+
+        .scenario-card.realistic .scenario-header {
+            background: linear-gradient(135deg, #FFB800 0%, #FFA000 100%);
+        }
+
+        .scenario-card.pessimistic .scenario-header {
+            background: linear-gradient(135deg, #0A3A2A 0%, #0D4A3A 100%);
+        }
+
+        .scenario-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .scenario-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 24px;
+            background: rgba(10, 58, 42, 0.02);
+        }
+
+        .metric {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-value.positive {
+            color: #00B88A;
+        }
+
+        .metric-value.warning {
+            color: #FFA000;
+        }
+
+        /* Financial Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px var(--shadow);
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary) 0%, #0D4A3A 100%);
+            color: white;
+        }
+
+        th {
+            padding: 20px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 163, 0.05);
+        }
+
+        .row-header {
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .row-subsection {
+            background: rgba(10, 58, 42, 0.03);
+            font-weight: 600;
+        }
+
+        .row-total {
+            background: rgba(0, 217, 163, 0.1);
+            font-weight: 700;
+            border-top: 2px solid var(--accent);
+        }
+
+        /* Map Section */
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .map-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .map-header {
+            padding: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, #0D4A3A 100%);
+            color: white;
+        }
+
+        .map-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .map-location {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            color: var(--accent);
+        }
+
+        .map-container {
+            height: 400px;
+            background: linear-gradient(135deg, #E8F5F1 0%, #D0E8E0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            padding: 24px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 48px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 48px 20px;
+            }
+
+            .scenarios {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-wrapper {
+                border-radius: 8px;
+            }
+
+            th, td {
+                padding: 12px 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scenario-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .scenario-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .scenario-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-gray-800 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">The Nook</h1>
-            <div class="space-x-4">
-                <a href="#overview" class="hover:text-gray-300">Overview</a>
-                <a href="#key-metrics" class="hover:text-gray-300">Key Metrics</a>
-                <a href="#startup" class="hover:text-gray-300">Startup Costs</a>
-                <a href="#income" class="hover:text-gray-300">Income Statement</a>
-                <a href="#cashflow" class="hover:text-gray-300">Cash Flow</a>
-                <a href="#balance" class="hover:text-gray-300">Balance Sheet</a>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="subtitle">2026-2031 Financial Projections</div>
+            <h1>BeepBeeBeeep</h1>
+            <p class="header-description">
+                Autonomous Electric Mini-Bus Facilitation Platform — Connecting municipalities with sustainable rural mobility solutions. Starting with 2 pilots in Portugal and Lithuania (2026).
+            </p>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="scenarios">
+                <div class="scenario-card optimistic">
+                    <div class="scenario-header">
+                        <h3>Optimistic Scenario</h3>
+                        <p style="color: white; opacity: 0.95; font-size: 0.95rem;">High adoption via EU funds & rapid scaling</p>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="metric">
+                            <div class="metric-label">NPV</div>
+                            <div class="metric-value positive">~€20M+</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">IRR</div>
+                            <div class="metric-value positive">>300%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value">Late 2026</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">2031 Deals</div>
+                            <div class="metric-value">45</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-card realistic">
+                    <div class="scenario-header">
+                        <h3>Realistic Scenario</h3>
+                        <p style="color: white; opacity: 0.95; font-size: 0.95rem;">Moderate growth with proven pilots</p>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="metric">
+                            <div class="metric-label">NPV</div>
+                            <div class="metric-value positive">~€8.5M+</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">IRR</div>
+                            <div class="metric-value positive">~150%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value">2027</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">2031 Deals</div>
+                            <div class="metric-value">25</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-card pessimistic">
+                    <div class="scenario-header">
+                        <h3>Pessimistic Scenario</h3>
+                        <p style="color: white; opacity: 0.95; font-size: 0.95rem;">Slow uptake with technical hurdles</p>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="metric">
+                            <div class="metric-label">NPV</div>
+                            <div class="metric-value warning">~€3.4M+</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">IRR</div>
+                            <div class="metric-value warning">~60%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Payback</div>
+                            <div class="metric-value">2029</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">2031 Deals</div>
+                            <div class="metric-value">12</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <!-- Main Content -->
-    <div class="container mx-auto p-6">
-        <!-- Overview -->
-        <section id="overview" class="mb-8">
-            <h2 class="text-3xl font-bold mb-4">Financial Projections (2025–2027)</h2>
-            <p class="text-lg">Financial outlook for The Nook, a 50-seat bar in Vilnius, Lithuania, focusing on craft cocktails, local beers, and snacks. All figures in EUR, fully equity-funded (€95,000), no debt, 300 operating days/year. Revenue assumes 100 daily customers at €15 average spend, with 6% growth in 2026, 7% in 2027. COGS at 32%, labor at 30% of revenue. Taxes at 15% on EBIT.</p>
-        </section>
-
-        <!-- Key Metrics -->
-        <section id="key-metrics" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Key Metrics</h2>
-            <div class="table-container">
+    <section>
+        <div class="container">
+            <h2 class="section-title">Optimistic Scenario - Detailed Projections</h2>
+            <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Metric</th>
-                            <th>2025</th>
+                            <th>Financial Assessment</th>
                             <th>2026</th>
                             <th>2027</th>
+                            <th>2028</th>
+                            <th>2029</th>
+                            <th>2030</th>
+                            <th>2031</th>
+                            <th>Post-2031</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Gross Margin (%)</td><td>68.0</td><td>68.0</td><td>68.0</td></tr>
-                        <tr><td>Net Profit Margin (%)</td><td>16.7</td><td>17.6</td><td>18.5</td></tr>
-                        <tr><td>Return on Investment (%)</td><td>52.8</td><td>58.8</td><td>66.2</td></tr>
-                        <tr><td>Cash Flow Growth (%)</td><td>-</td><td>44.8</td><td>11.2</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="mt-4 text-sm">*Notes: Gross Margin = (Revenue - COGS) / Revenue. Net Profit Margin = Net Profit / Revenue. ROI = Net Profit / Initial Investment (€95,000). Cash Flow Growth = (Net Cash Flow - Prior Year Net Cash Flow) / Prior Year Net Cash Flow (2025 baseline: N/A).</p>
-        </section>
-
-        <!-- Startup Costs -->
-        <section id="startup" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Startup Costs (2025)</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Amount (€)</th>
+                        <tr class="row-subsection">
+                            <td class="row-header">Investment Cash Flows</td>
+                            <td>-€200,000</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Leasehold Improvements</td><td>40,000</td></tr>
-                        <tr><td>Equipment and Furniture</td><td>30,000</td></tr>
-                        <tr><td>Initial Inventory</td><td>10,000</td></tr>
-                        <tr><td>Licenses and Permits</td><td>5,000</td></tr>
-                        <tr><td>Marketing (Launch)</td><td>5,000</td></tr>
-                        <tr><td>Working Capital</td><td>5,000</td></tr>
-                        <tr><td><strong>Total</strong></td><td><strong>95,000</strong></td></tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Sales</td>
+                        </tr>
+                        <tr>
+                            <td>Quantity (Deals)</td>
+                            <td>2</td>
+                            <td>8</td>
+                            <td>15</td>
+                            <td>25</td>
+                            <td>35</td>
+                            <td>45</td>
+                            <td>45</td>
+                        </tr>
+                        <tr>
+                            <td>Sales Price (avg. per deal)</td>
+                            <td>€50,000</td>
+                            <td>€60,000</td>
+                            <td>€70,000</td>
+                            <td>€80,000</td>
+                            <td>€90,000</td>
+                            <td>€100,000</td>
+                            <td>€100,000</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Sales</td>
+                            <td>€100,000</td>
+                            <td>€480,000</td>
+                            <td>€1,050,000</td>
+                            <td>€2,000,000</td>
+                            <td>€3,150,000</td>
+                            <td>€4,500,000</td>
+                            <td>€4,500,000</td>
+                        </tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Costs</td>
+                        </tr>
+                        <tr>
+                            <td>Variable Cost (per deal)</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                            <td>€10,000</td>
+                        </tr>
+                        <tr>
+                            <td>Total Variable Costs</td>
+                            <td>€20,000</td>
+                            <td>€80,000</td>
+                            <td>€150,000</td>
+                            <td>€250,000</td>
+                            <td>€350,000</td>
+                            <td>€450,000</td>
+                            <td>€450,000</td>
+                        </tr>
+                        <tr>
+                            <td>Other Costs (fixed)</td>
+                            <td>€50,000</td>
+                            <td>€60,000</td>
+                            <td>€70,000</td>
+                            <td>€80,000</td>
+                            <td>€90,000</td>
+                            <td>€100,000</td>
+                            <td>€100,000</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Costs</td>
+                            <td>€70,000</td>
+                            <td>€180,000</td>
+                            <td>€260,000</td>
+                            <td>€370,000</td>
+                            <td>€480,000</td>
+                            <td>€590,000</td>
+                            <td>€550,000</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (before tax)</td>
+                            <td>€30,000</td>
+                            <td>€300,000</td>
+                            <td>€790,000</td>
+                            <td>€1,630,000</td>
+                            <td>€2,670,000</td>
+                            <td>€3,910,000</td>
+                            <td>€3,950,000</td>
+                        </tr>
+                        <tr>
+                            <td>Income Tax (25%)</td>
+                            <td>€7,500</td>
+                            <td>€75,000</td>
+                            <td>€197,500</td>
+                            <td>€407,500</td>
+                            <td>€667,500</td>
+                            <td>€977,500</td>
+                            <td>€987,500</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (after tax)</td>
+                            <td>€22,500</td>
+                            <td>€225,000</td>
+                            <td>€592,500</td>
+                            <td>€1,222,500</td>
+                            <td>€2,002,500</td>
+                            <td>€2,932,500</td>
+                            <td>€2,962,500</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation (add back)</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Operating Cash Flows</td>
+                            <td>€22,500</td>
+                            <td>€265,000</td>
+                            <td>€632,500</td>
+                            <td>€1,262,500</td>
+                            <td>€2,042,500</td>
+                            <td>€2,972,500</td>
+                            <td>€2,962,500</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Terminal Cash Flows</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€24,750,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total" style="background: rgba(0, 217, 163, 0.2);">
+                            <td class="row-header">Total Cash Flows</td>
+                            <td>-€177,500</td>
+                            <td>€265,000</td>
+                            <td>€632,500</td>
+                            <td>€1,262,500</td>
+                            <td>€2,042,500</td>
+                            <td>€27,722,500</td>
+                            <td>€2,962,500</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Income Statement -->
-        <section id="income" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">3-Year Income Statement</h2>
-            <div class="table-container">
+    <section>
+        <div class="container">
+            <h2 class="section-title">Realistic Scenario - Detailed Projections</h2>
+            <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Year</th>
-                            <th>2025</th>
+                            <th>Financial Assessment</th>
                             <th>2026</th>
                             <th>2027</th>
+                            <th>2028</th>
+                            <th>2029</th>
+                            <th>2030</th>
+                            <th>2031</th>
+                            <th>Post-2031</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Revenue</td><td>300,000</td><td>318,000</td><td>340,260</td></tr>
-                        <tr><td>COGS</td><td>96,000</td><td>101,760</td><td>108,883</td></tr>
-                        <tr><td>Gross Profit</td><td>204,000</td><td>216,240</td><td>231,377</td></tr>
-                        <tr><td>Labor</td><td>90,000</td><td>95,400</td><td>102,078</td></tr>
-                        <tr><td>Rent</td><td>25,000</td><td>25,750</td><td>26,523</td></tr>
-                        <tr><td>Utilities</td><td>10,000</td><td>10,300</td><td>10,609</td></tr>
-                        <tr><td>Marketing</td><td>5,000</td><td>5,150</td><td>5,305</td></tr>
-                        <tr><td>Other OpEx</td><td>10,000</td><td>10,300</td><td>10,609</td></tr>
-                        <tr><td>Depreciation</td><td>5,000</td><td>5,000</td><td>5,000</td></tr>
-                        <tr><td>Total Expenses</td><td>145,000</td><td>151,550</td><td>159,623</td></tr>
-                        <tr><td>EBITDA</td><td>64,000</td><td>70,690</td><td>78,994</td></tr>
-                        <tr><td>EBIT</td><td>59,000</td><td>65,690</td><td>73,994</td></tr>
-                        <tr><td>Taxes (15%)</td><td>8,850</td><td>9,854</td><td>11,099</td></tr>
-                        <tr><td><strong>Net Profit</strong></td><td><strong>50,150</strong></td><td><strong>55,836</strong></td><td><strong>62,895</strong></td></tr>
+                        <tr class="row-subsection">
+                            <td class="row-header">Investment Cash Flows</td>
+                            <td>-€200,000</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Sales</td>
+                        </tr>
+                        <tr>
+                            <td>Quantity (Deals)</td>
+                            <td>2</td>
+                            <td>5</td>
+                            <td>10</td>
+                            <td>15</td>
+                            <td>20</td>
+                            <td>25</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td>Sales Price (avg. per deal)</td>
+                            <td>€40,000</td>
+                            <td>€50,000</td>
+                            <td>€60,000</td>
+                            <td>€70,000</td>
+                            <td>€80,000</td>
+                            <td>€90,000</td>
+                            <td>€90,000</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Sales</td>
+                            <td>€80,000</td>
+                            <td>€250,000</td>
+                            <td>€600,000</td>
+                            <td>€1,050,000</td>
+                            <td>€1,600,000</td>
+                            <td>€2,250,000</td>
+                            <td>€2,250,000</td>
+                        </tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Costs</td>
+                        </tr>
+                        <tr>
+                            <td>Total Variable Costs</td>
+                            <td>€20,000</td>
+                            <td>€50,000</td>
+                            <td>€100,000</td>
+                            <td>€150,000</td>
+                            <td>€200,000</td>
+                            <td>€250,000</td>
+                            <td>€250,000</td>
+                        </tr>
+                        <tr>
+                            <td>Other Costs (fixed)</td>
+                            <td>€50,000</td>
+                            <td>€55,000</td>
+                            <td>€60,000</td>
+                            <td>€65,000</td>
+                            <td>€70,000</td>
+                            <td>€75,000</td>
+                            <td>€75,000</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Costs</td>
+                            <td>€70,000</td>
+                            <td>€145,000</td>
+                            <td>€200,000</td>
+                            <td>€255,000</td>
+                            <td>€310,000</td>
+                            <td>€365,000</td>
+                            <td>€325,000</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (before tax)</td>
+                            <td>€10,000</td>
+                            <td>€105,000</td>
+                            <td>€400,000</td>
+                            <td>€795,000</td>
+                            <td>€1,290,000</td>
+                            <td>€1,885,000</td>
+                            <td>€1,925,000</td>
+                        </tr>
+                        <tr>
+                            <td>Income Tax (25%)</td>
+                            <td>€2,500</td>
+                            <td>€26,250</td>
+                            <td>€100,000</td>
+                            <td>€198,750</td>
+                            <td>€322,500</td>
+                            <td>€471,250</td>
+                            <td>€481,250</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (after tax)</td>
+                            <td>€7,500</td>
+                            <td>€78,750</td>
+                            <td>€300,000</td>
+                            <td>€596,250</td>
+                            <td>€967,500</td>
+                            <td>€1,413,750</td>
+                            <td>€1,443,750</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation (add back)</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Operating Cash Flows</td>
+                            <td>€7,500</td>
+                            <td>€118,750</td>
+                            <td>€340,000</td>
+                            <td>€636,250</td>
+                            <td>€1,007,500</td>
+                            <td>€1,453,750</td>
+                            <td>€1,443,750</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Terminal Cash Flows</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€12,031,250</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total" style="background: rgba(0, 217, 163, 0.2);">
+                            <td class="row-header">Total Cash Flows</td>
+                            <td>-€192,500</td>
+                            <td>€118,750</td>
+                            <td>€340,000</td>
+                            <td>€636,250</td>
+                            <td>€1,007,500</td>
+                            <td>€13,485,000</td>
+                            <td>€1,443,750</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Cash Flow Statement -->
-        <section id="cashflow" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">3-Year Cash Flow Statement</h2>
-            <div class="table-container">
+    <section>
+        <div class="container">
+            <h2 class="section-title">Pessimistic Scenario - Detailed Projections</h2>
+            <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Year</th>
-                            <th>2025</th>
+                            <th>Financial Assessment</th>
                             <th>2026</th>
                             <th>2027</th>
+                            <th>2028</th>
+                            <th>2029</th>
+                            <th>2030</th>
+                            <th>2031</th>
+                            <th>Post-2031</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Beginning Cash</td><td>0</td><td>120,150</td><td>174,000</td></tr>
-                        <tr><td>Net Profit</td><td>50,150</td><td>55,836</td><td>62,895</td></tr>
-                        <tr><td>+ Depreciation</td><td>5,000</td><td>5,000</td><td>5,000</td></tr>
-                        <tr><td>Cash from Operations</td><td>55,150</td><td>60,836</td><td>67,895</td></tr>
-                        <tr><td>CapEx</td><td>-30,000</td><td>-5,000</td><td>-5,000</td></tr>
-                        <tr><td>Δ Working Capital</td><td>0</td><td>-2,000</td><td>-3,000</td></tr>
-                        <tr><td>Cash from Investing</td><td>-30,000</td><td>-7,000</td><td>-8,000</td></tr>
-                        <tr><td>Equity Investment</td><td>95,000</td><td>0</td><td>0</td></tr>
-                        <tr><td>Net Cash Flow</td><td>120,150</td><td>53,836</td><td>59,895</td></tr>
-                        <tr><td><strong>Ending Cash</strong></td><td><strong>120,150</strong></td><td><strong>174,000</strong></td><td><strong>233,895</strong></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Balance Sheet -->
-        <section id="balance" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">3-Year Balance Sheet (Year-End)</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
+                        <tr class="row-subsection">
+                            <td class="row-header">Investment Cash Flows</td>
+                            <td>-€200,000</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Sales</td>
+                        </tr>
                         <tr>
-                            <th>Year</th>
-                            <th>2025</th>
-                            <th>2026</th>
-                            <th>2027</th>
+                            <td>Quantity (Deals)</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>5</td>
+                            <td>8</td>
+                            <td>10</td>
+                            <td>12</td>
+                            <td>12</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Assets</strong></td><td></td><td></td><td></td></tr>
-                        <tr><td>Cash</td><td>120,150</td><td>174,000</td><td>233,895</td></tr>
-                        <tr><td>Inventory</td><td>15,000</td><td>15,900</td><td>17,013</td></tr>
-                        <tr><td>Net Fixed Assets</td><td>25,000</td><td>20,000</td><td>15,000</td></tr>
-                        <tr><td><strong>Total Assets</strong></td><td><strong>160,150</strong></td><td><strong>209,900</strong></td><td><strong>265,908</strong></td></tr>
-                        <tr><td><strong>Liabilities</strong></td><td>0</td><td>0</td><td>0</td></tr>
-                        <tr><td><strong>Equity</strong></td><td></td><td></td><td></td></tr>
-                        <tr><td>Initial Equity</td><td>95,000</td><td>95,000</td><td>95,000</td></tr>
-                        <tr><td>Retained Earnings</td><td>50,150</td><td>105,986</td><td>168,881</td></tr>
-                        <tr><td><strong>Total Equity</strong></td><td><strong>145,150</strong></td><td><strong>200,986</strong></td><td><strong>263,881</strong></td></tr>
-                        <tr><td><strong>Total Liabilities & Equity</strong></td><td><strong>160,150</strong></td><td><strong>209,900</strong></td><td><strong>265,908</strong></td></tr>
+                        <tr>
+                            <td>Sales Price (avg. per deal)</td>
+                            <td>€30,000</td>
+                            <td>€40,000</td>
+                            <td>€50,000</td>
+                            <td>€60,000</td>
+                            <td>€70,000</td>
+                            <td>€80,000</td>
+                            <td>€80,000</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Sales</td>
+                            <td>€60,000</td>
+                            <td>€120,000</td>
+                            <td>€250,000</td>
+                            <td>€480,000</td>
+                            <td>€700,000</td>
+                            <td>€960,000</td>
+                            <td>€960,000</td>
+                        </tr>
+                        <tr class="row-subsection">
+                            <td class="row-header" colspan="8">Expected Costs</td>
+                        </tr>
+                        <tr>
+                            <td>Total Variable Costs</td>
+                            <td>€20,000</td>
+                            <td>€30,000</td>
+                            <td>€50,000</td>
+                            <td>€80,000</td>
+                            <td>€100,000</td>
+                            <td>€120,000</td>
+                            <td>€120,000</td>
+                        </tr>
+                        <tr>
+                            <td>Other Costs (fixed)</td>
+                            <td>€50,000</td>
+                            <td>€55,000</td>
+                            <td>€60,000</td>
+                            <td>€65,000</td>
+                            <td>€70,000</td>
+                            <td>€75,000</td>
+                            <td>€75,000</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Total Costs</td>
+                            <td>€70,000</td>
+                            <td>€125,000</td>
+                            <td>€150,000</td>
+                            <td>€185,000</td>
+                            <td>€210,000</td>
+                            <td>€235,000</td>
+                            <td>€195,000</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (before tax)</td>
+                            <td>-€10,000</td>
+                            <td>-€5,000</td>
+                            <td>€100,000</td>
+                            <td>€295,000</td>
+                            <td>€490,000</td>
+                            <td>€725,000</td>
+                            <td>€765,000</td>
+                        </tr>
+                        <tr>
+                            <td>Income Tax (25%)</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€25,000</td>
+                            <td>€73,750</td>
+                            <td>€122,500</td>
+                            <td>€181,250</td>
+                            <td>€191,250</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Operating Income (after tax)</td>
+                            <td>-€10,000</td>
+                            <td>-€5,000</td>
+                            <td>€75,000</td>
+                            <td>€221,250</td>
+                            <td>€367,500</td>
+                            <td>€543,750</td>
+                            <td>€573,750</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation (add back)</td>
+                            <td>€0</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€40,000</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td class="row-header">Operating Cash Flows</td>
+                            <td>-€10,000</td>
+                            <td>€35,000</td>
+                            <td>€115,000</td>
+                            <td>€261,250</td>
+                            <td>€407,500</td>
+                            <td>€583,750</td>
+                            <td>€573,750</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Terminal Cash Flows</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€0</td>
+                            <td>€4,781,250</td>
+                            <td>€0</td>
+                        </tr>
+                        <tr class="row-total" style="background: rgba(0, 217, 163, 0.2);">
+                            <td class="row-header">Total Cash Flows</td>
+                            <td>-€210,000</td>
+                            <td>€35,000</td>
+                            <td>€115,000</td>
+                            <td>€261,250</td>
+                            <td>€407,500</td>
+                            <td>€5,365,000</td>
+                            <td>€573,750</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Notes -->
-        <section id="notes" class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Notes</h2>
-            <ul class="notes list-disc pl-6">
-                <li>Cumulative net profit by 2027: €168,881.</li>
-                <li>Positive cash flow from Year 1; €233,895 cash by 2027.</li>
-                <li>Assumptions: 68% gross margin, 3% annual cost inflation, €30,000 initial equipment (€5,000/year depreciation).</li>
-                <li>Risks: Tourism dependency, rising costs. Mitigate with promotions.</li>
-                <li>Consult a Lithuanian accountant for VAT (21%) and local regulations.</li>
-            </ul>
-        </section>
-    </div>
+    <section>
+        <div class="container">
+            <h2 class="section-title">2026 Pilot Route Maps</h2>
+            <div class="maps-grid">
+                <div class="map-card">
+                    <div class="map-header">
+                        <h3>Portugal Pilot Route</h3>
+                        <p class="map-location">📍 Active cooling climate testing</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                          <iframe src="https://www.google.com/maps/d/u/0/embed?mid=12p-T2yJ1y02XgcvvJ717hkDPhBgSx6s&ehbc=2E312F" width="640" height="480"></iframe>
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center p-4">
-        <p>&copy; 2025 The Nook. All rights reserved.</p>
+                <div class="map-card">
+                    <div class="map-header">
+                        <h3>Lithuania Pilot Route</h3>
+                        <p class="map-location">📍 Ukmergė region - Battery pre-heating testing</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2288.5647382947!2d24.751234!3d55.246778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e7b4b9b4b9b4b9%3A0x0!2zNTXCsDE0JzQ4LjQiTiAyNMKwNDUnMDQuNCJF!5e0!3m2!1sen!2s!4v1234567890"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-header">
+                        <h3>Future Expansion Routes</h3>
+                        <p class="map-location">📍 Rural European municipalities (2027+)</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5236890.547324!2d8.4!3d50.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDAwJzAwLjAiTiA4wrAyNCcwMC4wIkU!5e0!3m2!1sen!2s!4v1234567890"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p><strong>BeepBeeBeeep</strong> — Autonomous Electric Mini-Bus Facilitation Platform</p>
+            <p style="margin-top: 8px; opacity: 0.7;">Financial projections based on 2 pilots (Portugal & Lithuania) launching 2026 | WACC: 12%</p>
+        </div>
     </footer>
-
-    <!-- Smooth Scroll Script -->
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
